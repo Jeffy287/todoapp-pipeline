@@ -23,4 +23,4 @@ To run this application locally, follow these steps:
 1. Clone the repository:
    ```bash
    git clone https://github.com/Jeffy287/DevsecOps-todo.git
-   cd DevsecOps-todo/todo
+   cd DevsecOps---todo/todo
