@@ -18,4 +18,4 @@ This is a simple To-Do app that allows users to add, remove, and manage tasks. T
 1. Clone the repository:
    ```bash
    git clone https://github.com/Jeffy287/DevsecOps-todo.git
-   cd DevsecOps-todo
+   cd DevsecOps---todo
