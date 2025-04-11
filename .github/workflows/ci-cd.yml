@@ -34,15 +34,12 @@ jobs:
           --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
           --dir=. \
           --message="Preview Deploy" \
-          --json > ../deploy-info.json
-
-    - name: Debug: Show deploy-info.json
-      run: cat deploy-info.json
+          --json > ../../deploy-info.json  # Save at root for next step
 
     - name: Extract Staging URL
       run: |
         echo "ZAP_URL=$(jq -r '.deploy_url' deploy-info.json)" >> $GITHUB_ENV
-      shell: bash
+      working-directory: .
 
     - name: OWASP ZAP Scan on Staging
       uses: zaproxy/action-full-scan@v0.8.0
@@ -52,6 +49,10 @@ jobs:
         allow_issue_writing: false
         artifact_name: zap-report
       continue-on-error: true
+
+    - name: Show ZAP Report in Console (Markdown)
+      if: always()
+      run: cat report_md.md
 
     - name: Upload ZAP Report
       if: always()
