@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: DevSecOps CI/CD Pipeline
 
 on:
   push:
@@ -26,6 +26,9 @@ jobs:
       working-directory: TodoApp
       run: npm run build
 
+    - name: Ensure zap folder exists
+      run: mkdir -p zap
+
     - name: Start OWASP ZAP scan
       uses: zaproxy/action-full-scan@v0.8.0
       with:
@@ -34,9 +37,12 @@ jobs:
         output: 'zap/zap_report.html'
       continue-on-error: true
 
+    - name: List all files in workspace (debugging)
+      run: ls -R
+
     - name: Upload ZAP scan report
       if: always()
-      uses: actions/upload-artifact@v3@3b52ce3645d2dc3c9f245e4e8d2cb29270989c82
+      uses: actions/upload-artifact@v3
       with:
         name: zap-report
         path: zap/zap_report.html
@@ -44,4 +50,8 @@ jobs:
     - name: Deploy to Netlify
       working-directory: TodoApp
       run: |
-        npx netlify-cli deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --prod --dir=.
+        npx netlify-cli deploy \
+          --site ${{ secrets.NETLIFY_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+          --prod \
+          --dir=.
