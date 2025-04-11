@@ -1,3 +1,5 @@
+name: DevSecOps CI/CD Pipeline
+
 on:
   push:
     branches:
@@ -9,12 +11,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # This is already updated to v3
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Explicitly specify Node.js v20
+        node-version: '20'
 
     - name: Install dependencies
       working-directory: TodoApp
@@ -24,22 +26,32 @@ jobs:
       working-directory: TodoApp
       run: npm run build
 
+    - name: Ensure zap folder exists
+      run: mkdir -p zap
+
     - name: Start OWASP ZAP scan
       uses: zaproxy/action-full-scan@v0.8.0
       with:
-        target: 'https://jefdevsecops.netlify.app/'  # Update this with your Netlify app URL
-        fail_action: false  # Allows non-critical warnings to pass
-        output: 'zap/zap_report.html'  # Specify where to save the report
-      continue-on-error: true  # Continue if there are warnings or non-critical errors
+        target: 'https://jefdevsecops.netlify.app/'
+        fail_action: false
+        output: 'zap/zap_report.html'
+      continue-on-error: true
+
+    - name: List all files in workspace (debugging)
+      run: ls -R
 
     - name: Upload ZAP scan report
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: zap-report
-        path: zap/zap_report.html  # Adjust this path to match the output location
+        path: zap/zap_report.html
 
     - name: Deploy to Netlify
       working-directory: TodoApp
       run: |
-        npx netlify-cli deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --prod --dir=.
+        npx netlify-cli deploy \
+          --site ${{ secrets.NETLIFY_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+          --prod \
+          --dir=.
