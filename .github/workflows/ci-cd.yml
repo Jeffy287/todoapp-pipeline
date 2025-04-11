@@ -34,10 +34,10 @@ jobs:
           --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
           --dir=. \
           --message="Preview Deploy" \
-          --json > ../deploy-info.json  # ✅ Save in root directory
+          --json > ../deploy-info.json
 
     - name: Debug: Show deploy-info.json
-      run: cat deploy-info.json  # ✅ Confirm file and contents
+      run: cat deploy-info.json
 
     - name: Extract Staging URL
       run: |
