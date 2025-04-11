@@ -51,9 +51,9 @@ jobs:
 
     - name: Upload ZAP Report
       if: always()
-      uses: actions/upload-artifact@v3.1.2 
+      uses: actions/upload-artifact@v4
       with:
-        name: zap-report
+        name: zap-report-${{ github.run_id }}
         path: zap/zap_report.html
 
     - name: Deploy to Netlify (Production)
