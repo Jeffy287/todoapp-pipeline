@@ -34,12 +34,13 @@ jobs:
           --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
           --dir=. \
           --message="Preview Deploy" \
-          --json > deploy-info.json
+          --json > ../../deploy-info.json  # 💡 Save file in root so next step can access it
 
     - name: Extract Staging URL
-      id: extract_url
       run: |
         echo "ZAP_URL=$(jq -r '.deploy_url' deploy-info.json)" >> $GITHUB_ENV
+      working-directory: .  # 👈 Ensure it's run from repo root
+      shell: bash
 
     - name: OWASP ZAP Scan on Staging
       uses: zaproxy/action-full-scan@v0.8.0
