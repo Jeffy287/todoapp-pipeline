@@ -46,7 +46,8 @@ jobs:
       with:
         target: '${{ env.ZAP_URL }}'
         fail_action: false
-        output: 'zap/zap_report.html'
+        allow_issue_writing: false
+        artifact_name: zap-report
       continue-on-error: true
 
     - name: Upload ZAP Report
@@ -54,7 +55,10 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: zap-report-${{ github.run_id }}
-        path: zap/zap_report.html
+        path: |
+          report_html.html
+          report_md.md
+          report_json.json
 
     - name: Deploy to Netlify (Production)
       working-directory: TodoApp
