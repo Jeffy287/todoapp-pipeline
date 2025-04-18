@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todoapp
-          image: todoapp-image:latest  # Loaded into Minikube
-          imagePullPolicy: IfNotPresent  # Use local image loaded via minikube image load
+          image: todoapp-image:latest  # Must match exactly what you built & loaded
+          imagePullPolicy: Never       # 🔥 This is the key line
           ports:
-            - containerPort: 3000
+            - containerPort: 30
