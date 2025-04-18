@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todoapp
-          image: todoapp-image:latest  # Must match exactly what you built & loaded
-          imagePullPolicy: Never       # 🔥 This is the key line
+          image: jefrinpeter/todoapp-image:latest  # Docker Hub image name
           ports:
-            - containerPort: 30
+            - containerPort: 3000
+          imagePullPolicy: Always  # Ensures Kubernetes always pulls the latest image
