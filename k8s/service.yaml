@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: todoapp-service
 spec:
-  type: NodePort  # Exposes the app on a port outside of the cluster
+  type: NodePort
   selector:
     app: todoapp
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30080  # Exposed port on Minikube
+      nodePort: 30080  # This is the port exposed by Minikube

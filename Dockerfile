@@ -14,5 +14,5 @@ COPY TodoApp/ .
 # Expose the port
 EXPOSE 3000
 
-# Start the app
-CMD ["npm", "start"]
+# Start the app on port 3000
+CMD ["npm", "start", "--", "--port", "3000"]
